@@ -15,12 +15,8 @@ export const userReducer = (state = defaultState, action) => {
         selectedmessage: state[action.selectedContact.id] && state[action.selectedContact.id].message || ''
       };
       case "ON_MESSAGE_CHANGED" :
-      console.log('ssssssss'+state)
-     // set(state, action.id, {id : action.id, message: action.message});
       const stateid = state[action.id] ? state[action.id] : set(state, action.id, {id : action.id, message:[]});;
-      console.log('2222222'+stateid[action.id]);
       let msg =  action.id ? state[action.id].message : state[action.id].message
-      console.log('2222222'+state[action.id].message );
      const newArray = msg.push(action.message);
       const newmsg = msg.map((item) => {
           return item;

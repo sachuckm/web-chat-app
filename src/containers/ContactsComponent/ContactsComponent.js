@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
 import './ContactsComponent.css';
-//import Inventory from './../inventory/Inventory';
 import ContactInfoCard from './../../components/ContactInfoCard/ContactInfoCard';
 import ReactDOM from 'react-dom';
-//import logo from './../../images/logo.png';
 import includes from 'lodash/includes';
 import toLower from 'lodash/toLower';
 
@@ -20,7 +18,7 @@ import img6 from './../../../src/resource/images/download_6.png';
 export default class ContactsComponent extends Component {
     constructor(props) {
       super(props);
-      this.state = {name:'Sachin', Seachid : '', searchedNames : [], names: [
+      this.state = { Seachid : '', searchedNames : [], names: [
         {isSelected:true, img:require('./../../resource/images/download_6.png'), id:1, name : 'Sachin'},
         {isSelected:false,img:img2,  id:2, name : 'Prithvi'},
         {isSelected:false,img:img3,  id:3, name : 'Pranith'},
@@ -41,7 +39,6 @@ export default class ContactsComponent extends Component {
     }
  
     changecapture = (event) => {
-      console.log(JSON.stringify(this.state.names))
       let searchArray = this.state.names.filter((item) => {
         if (this.props.selectedContact.id === item.id && item.isSelected === this.props.selectedContact.isSelected) {
           item.isSelected = true
@@ -50,7 +47,6 @@ export default class ContactsComponent extends Component {
             if (includes(toLower(item.name), toLower(event.target.value))) 
             return item
       })
-      console.log('search'+searchArray);
       this.setState({Seachid : event.target.value})
       if (searchArray.length !== this.state.searchedNames.length)
       this.setState({searchedNames : searchArray})
@@ -59,27 +55,29 @@ export default class ContactsComponent extends Component {
 
     }
     contactSelected (event, selectedItem) {
-console.log('selectedItem'+this.props);
+      const updatedItems = this.state.searchedNames.map((item) => {
+      item.id === selectedItem.id ? item.isSelected = true : item.isSelected = false;
+        return item;
+      })
 
-  const updatedItems = this.state.searchedNames.map((item) => {
-   item.id === selectedItem.id ? item.isSelected = true : item.isSelected = false;
-   return item;
-})
-
-this.setState({searchedNames: updatedItems})
-this.props.selectContactAction(selectedItem);
+      this.setState({searchedNames: updatedItems})
+      this.props.selectContactAction(selectedItem);
     }
     componentDidMount() {
       this.setState({searchedNames: this.state.names})
       console.log(this.context.redux);
     }
+    contactcard(event) {
+      event.preventDefault();
+    }
     render() {
-  const contactInfoCard =  <ContactInfoCard
-  name = {this.state && this.state.names &&this.state.names[0].name}
-  img = {this.state && this.state.names &&this.state.names[0].img}
-  cssClassName ="containercontact"
-  ></ContactInfoCard>
-  const list = this.state.searchedNames.map((item, index) =>
+      const contactInfoCard =  <ContactInfoCard
+      contactSelected = {this.contactcard.bind(this)}
+        name = {this.state && this.state.names &&this.state.names[0].name}
+        img = {this.state && this.state.names &&this.state.names[0].img}
+        cssClassName ="containercontact"
+      ></ContactInfoCard>
+      const list = this.state.searchedNames.map((item, index) =>
         <ContactInfoCard 
             contactSelected = {this.contactSelected.bind(this)}
             img = {item.img}
@@ -89,13 +87,11 @@ this.props.selectContactAction(selectedItem);
              id={item.id}
             >
         </ContactInfoCard>);
-  const contactsContainer = (
-    <div>
+        const contactsContainer = (<div>
         {contactInfoCard}
         <input placeholder="Search Contacts"  onChange={this.changecapture} value={this.state.Seachid} className="SearchContacts" type="text" />
         {list}
-    </div>
-) 
+        </div>) 
       return (
         <div className = "contactsList">
        {contactsContainer}
