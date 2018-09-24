@@ -3,7 +3,8 @@
     return {
       type: 'ON_CONTACT_SELECTED',
       selectedContact,
-      selectedmsg
+      selectedmsg,
+      isSelected:true
     };
   };
   export const messgeSave = (message, id,) => {

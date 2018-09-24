@@ -4,6 +4,7 @@ import ContactInfoCard from './../../components/ContactInfoCard/ContactInfoCard'
 import ReactDOM from 'react-dom';
 import includes from 'lodash/includes';
 import toLower from 'lodash/toLower';
+import findIndex from 'lodash/findIndex';
 
 import img1 from './../../../src/resource/images/download_1.jpg';
 import img2 from './../../../src/resource/images/download_2.png';
@@ -19,7 +20,7 @@ export default class ContactsComponent extends Component {
     constructor(props) {
       super(props);
       this.state = { Seachid : '', searchedNames : [], names: [
-        {isSelected:true, img:require('./../../resource/images/download_6.png'), id:1, name : 'Sachin'},
+        {isSelected:false, img:require('./../../resource/images/download_6.png'), id:1, name : 'Sachin'},
         {isSelected:false,img:img2,  id:2, name : 'Prithvi'},
         {isSelected:false,img:img3,  id:3, name : 'Pranith'},
         {isSelected:false,img:img4,  id:4, name : 'Raghu'},
@@ -59,13 +60,25 @@ export default class ContactsComponent extends Component {
       item.id === selectedItem.id ? item.isSelected = true : item.isSelected = false;
         return item;
       })
-
+      const updatedItem = this.state.searchedNames.find((item) => {
+        item.id === selectedItem.id ? item.isSelected = true : item.isSelected = false;
+        if (item.id === selectedItem.id) return item;
+        })
       this.setState({searchedNames: updatedItems})
-      this.props.selectContactAction(selectedItem);
+      this.props.selectContactAction(updatedItem);
     }
     componentDidMount() {
+      let localst = JSON.parse(localStorage.getItem('state'));
+      let names = null;
+      if (localst && localst.userReducer && localst.userReducer.selectedContact) {
+        const index = findIndex(this.state.names, {id: localst.userReducer.selectedContact.id});
+        this.state.names.splice(index, 1, localst.userReducer.selectedContact);
+      } else {
+        this.state.names.splice(0, 1, {isSelected:true, img:require('./../../resource/images/download_6.png'), id:1, name : 'Sachin'});
+      }
+     
       this.setState({searchedNames: this.state.names})
-      console.log(this.context.redux);
+      // this.props.selectContactAction(this.props.selectedContact);
     }
     contactcard(event) {
       event.preventDefault();

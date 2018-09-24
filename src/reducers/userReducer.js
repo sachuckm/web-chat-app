@@ -1,7 +1,7 @@
 import set from 'lodash/set'
 const defaultState = {
    id : [],
-   selectedContact : {isSelected:true, img:require('./../../src/resource/images/download_6.png'), id:1, name : 'Sachin'}
+  // selectedContact : {isSelected:true, img:require('./../../src/resource/images/download_6.png'), id:1, name : 'Sachin'}
   };
 
 export const userReducer = (state = defaultState, action) => {

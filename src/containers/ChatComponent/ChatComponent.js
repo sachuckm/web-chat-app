@@ -45,7 +45,6 @@ export default class ChatComponent extends Component {
     {
       console.log('onError'+evt.data);
     }
-  
      doSend(message)
     {
       let msg = {
@@ -64,7 +63,9 @@ export default class ChatComponent extends Component {
       let time = new Date();
       msg.time = (padStart(time.getHours(), 2, 0) + ":" + padStart(time.getMinutes(), 2, 0));
      if (this.props && this.props.messgeSave) {
-      this.props.messgeSave(msg, this.props.selectedContact.id )
+       // TODO handle the selectedContact properly in localstorage now it always assume as first index on first time 
+      let id = this.props && this.props.selectedContact && this.props.selectedContact.id ? this.props.selectedContact.id : 0
+      this.props.messgeSave(msg, id )
      }
     }
     handleSubmit(event) {
