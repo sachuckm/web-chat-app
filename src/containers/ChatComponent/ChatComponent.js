@@ -64,7 +64,7 @@ export default class ChatComponent extends Component {
       msg.time = (padStart(time.getHours(), 2, 0) + ":" + padStart(time.getMinutes(), 2, 0));
      if (this.props && this.props.messgeSave) {
        // TODO handle the selectedContact properly in localstorage now it always assume as first index on first time 
-      let id = this.props && this.props.selectedContact && this.props.selectedContact.id ? this.props.selectedContact.id : 0
+      let id = this.props && this.props.selectedContact && this.props.selectedContact.id ? this.props.selectedContact.id : 1
       this.props.messgeSave(msg, id )
      }
     }
@@ -92,7 +92,7 @@ onKeyPressEnter(e) {
 
   const contactInfoCard =  <ContactInfoCard
   contactSelected = {this.contactSelected.bind(this)}
-  img = {this.props.selectedContact && this.props.selectedContact.img ? this.props.selectedContact.img : ''}
+  img = {this.props.selectedContact && this.props.selectedContact.img ? this.props.selectedContact.img : require('./../../resource/images/download_6.png')}
   name = {this.props.selectedContact && this.props.selectedContact.name ? this.props.selectedContact.name : 'Sachin'}
   cssClassName ="container_chat"
 
